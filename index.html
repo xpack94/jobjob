@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *,*::after,*::before{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toolbar{
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            background-color:#d3d3d3;
+            padding: 15px;
+            height: 130px;
+        }
+        fieldset{
+            border-right: 0px;
+        }
+        .deplacements {
+            font-size: 1.32rem;
+            float: right;
+            margin-right: 5px;
+        }
+    
+    </style>
+</head>
+<body>
+    
+<div class="wrapper">
+    
+       <div class="toolbar">
+         <fieldset>
+            <legend>Description</legend>
+            
+        <label for="imageUrl"> Url de l'image &nbsp;&nbsp;&nbsp;<input type="text" id="imageUrl" placeholder="entrer l'url de l'image"/></label>
+           <button class="imageChnager">changer l'image</button>
+           <br/>
+           <label for="nbrLignes">nombre de lignes <input type="text" id="nbrLignes" placeholder=" nombre de ignes"></label>
+           <label for="nbrColonnes">nombre de colonnes <input type="text" id="nbrColonnes" placeholder=" nombre de colonnes"></label>
+           <label for="affichageNumero">afficher numero<input type="checkbox" id="affichageNumero"></label>
+           <button class="afficher">afficher</button>
+           <button class="brasser">brasser les tuiles</button>
+        <label class="deplacements"> Deplacements:<span class="nbrDeplacements">0</span></label>
+        
+         </fieldset>
+          
+       </div>
+       <div class="grid">
+        
+    </div>
+    
+</div>    
+    
+    
+    
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
+  <script src="code.js"></script>
+</body>
+</html>
