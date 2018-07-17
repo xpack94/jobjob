@@ -30,9 +30,12 @@ $(function(){
             this.$imageChnager.click(this.changeImage.bind(this));
             this.$afficher.click(this.afficher.bind(this));
             this.$brasser.click(this.brasser.bind(this));
+            this.$nbrLignes.change(this.updateLignes.bind(this));
+            this.$nbrColonnes.change(this.updateColonnes.bind(this));
         },
         
         createGrid:function(){
+         
           let table=$("<table></table>");
           for(let i=0;i<this.lignes;i++){
               let tr=$("<tr></tr>");
@@ -58,7 +61,8 @@ $(function(){
         
         changeImage:function(){
             if(this.$imageUrl.val()!=""){
-                
+               this.url=this.$imageUrl.val();
+               this.createGrid();
             }else{
                 alert("taper un url");
             }
@@ -68,7 +72,20 @@ $(function(){
         },
         brasser:function(){
             
-        }
+        },
+        
+        updateLignes:function(){
+          
+              let nbLignes=parseInt(this.$nbrLignes.val());
+              this.lignes=nbLignes;
+              this.createGrid();
+        },
+        updateColonnes:function(){
+              let nbLignes=parseInt(this.$nbrColonnes.val());
+              this.colonnes=nbLignes;
+              this.createGrid();
+        },
+        
         
         
         
