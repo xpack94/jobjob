@@ -2,6 +2,11 @@ $(function(){
     
     var game={
         
+        lignes:4,
+        colonnes:4,
+        url:'img.png',
+        tdWidth:125,
+        tdHeight:125,
         init:function(){
             this.cachDom();
             this.addEvents();
@@ -22,18 +27,41 @@ $(function(){
         },
         
         addEvents:function(){
-            this.$imageChnager.click(this.changerImage.bind(this));
+            this.$imageChnager.click(this.changeImage.bind(this));
             this.$afficher.click(this.afficher.bind(this));
             this.$brasser.click(this.brasser.bind(this));
         },
         
         createGrid:function(){
-          
-            console.log(this.$grid);
+          let table=$("<table></table>");
+          for(let i=0;i<this.lignes;i++){
+              let tr=$("<tr></tr>");
+              for(let j=0;j<this.colonnes;j++){
+                let td=$("<td></td>");
+                td.addClass(`td${i}${j}`);
+                td.css({
+                    "width":this.tdWidth,
+                    "height":this.tdHeight,
+                    "background-image":`url(${this.url})`,
+                    "background-position": `${-j*this.tdWidth}px ${-i*this.tdHeight}px`,
+                    "background-repeat":"no-repeat"
+                    
+                });
+                tr.append(td);
+              }
+                table.append(tr);
+            
+          }
+            this.$grid.html(table);
+            
         },
         
-        changerImage:function(){
-            
+        changeImage:function(){
+            if(this.$imageUrl.val()!=""){
+                
+            }else{
+                alert("taper un url");
+            }
         },
         afficher:function(){
         
