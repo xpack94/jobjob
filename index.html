@@ -39,7 +39,16 @@
        
         td{
             border: 1px solid black;
+            position: relative;
         }
+        td span{
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.3rem;
+            opacity: 0;
+        }
+        
     
     </style>
 </head>
@@ -56,7 +65,7 @@
            <br/>
            <label for="nbrLignes">nombre de lignes <input type="number" id="nbrLignes" placeholder=" nombre de ignes"></label>
            <label for="nbrColonnes">nombre de colonnes <input type="number" id="nbrColonnes" placeholder=" nombre de colonnes"></label>
-           <label for="affichageNumero">afficher numero<input type="checkbox" id="affichageNumero"></label>
+           <label for="affichageOrder">afficher numero<input type="checkbox" id="affichageOrdre"></label>
            <button class="afficher">afficher</button>
            <button class="brasser">brasser les tuiles</button>
         <label class="deplacements"> Deplacements:<span class="nbrDeplacements">0</span></label>

@@ -7,6 +7,7 @@ $(function(){
         url:'img.png',
         tdWidth:125,
         tdHeight:125,
+        couleurImageVide:"grey",
         init:function(){
             this.cachDom();
             this.addEvents();
@@ -20,6 +21,7 @@ $(function(){
             this.$nbrLignes=$("#nbrLignes");
             this.$nbrColonnes=$("#nbrColonnes");
             this.$afficher=$(".afficher");
+            this.$affichageOrdre=$("#affichageOrdre");
             this.$brasser=$(".brasser");
             this.$deplacements=$(".deplacement span");
         
@@ -32,17 +34,24 @@ $(function(){
             this.$brasser.click(this.brasser.bind(this));
             this.$nbrLignes.change(this.updateLignes.bind(this));
             this.$nbrColonnes.change(this.updateColonnes.bind(this));
+            this.$affichageOrdre.click(this.showOrder.bind(this));
         },
         
         createGrid:function(){
-         
+          ordreDesCase=0;
           let table=$("<table></table>");
           for(let i=0;i<this.lignes;i++){
               let tr=$("<tr></tr>");
               for(let j=0;j<this.colonnes;j++){
                 let td=$("<td></td>");
-                td.addClass(`td${i}${j}`);
-                td.css({
+                let span=$("<span></span>");
+                //verifier que ce n'est pas la derniere case ou se trouve l'image vide
+                if(i*j!=(this.lignes-1)*(this.colonnes-1)){
+                    td.attr("draggable",'true');
+                    td.attr("ondragstart",'drag(event)');
+                    td.attr("data-order",++ordreDesCase);
+                    td.addClass(`td${i}${j}`);
+                     td.css({
                     "width":this.tdWidth,
                     "height":this.tdHeight,
                     "background-image":`url(${this.url})`,
@@ -50,11 +59,25 @@ $(function(){
                     "background-repeat":"no-repeat"
                     
                 });
+                
+                }else{
+                    //mettre la derniere case comme case vide
+                    td.addClass("vide");
+                    td.css({
+                    "width":this.tdWidth,
+                    "height":this.tdHeight,
+                    "background-color":this.couleurImageVide
+                    
+                });  
+                }
+                span.html(ordreDesCase);
+                td.append(span);   
                 tr.append(td);
               }
                 table.append(tr);
-            
+                
           }
+            
             this.$grid.html(table);
             
         },
@@ -67,8 +90,17 @@ $(function(){
                 alert("taper un url");
             }
         },
-        afficher:function(){
         
+        afficher:function(){
+           
+        },
+            
+        showOrder:function(){
+           if(this.$affichageOrdre.is(":checked")){
+               $("td span").css("opacity",1);
+           }else{
+               $("td span").css("opacity",0);
+           }
         },
         brasser:function(){
             
