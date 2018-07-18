@@ -8,6 +8,8 @@ $(function(){
         tdWidth:125,
         tdHeight:125,
         couleurImageVide:"grey",
+        taille:0,
+        nbrTour:300,
         init:function(){
             this.cachDom();
             this.addEvents();
@@ -31,7 +33,7 @@ $(function(){
         addEvents:function(){
             this.$imageChnager.click(this.changeImage.bind(this));
             this.$afficher.click(this.afficher.bind(this));
-            this.$brasser.click(this.brasser.bind(this));
+            this.$brasser.click(this.shuffle.bind(this));
             this.$nbrLignes.change(this.updateLignes.bind(this));
             this.$nbrColonnes.change(this.updateColonnes.bind(this));
             this.$affichageOrdre.click(this.showOrder.bind(this));
@@ -79,7 +81,8 @@ $(function(){
           }
             
             this.$grid.html(table);
-            
+            this.taille=ordreDesCase;
+           
         },
         
         changeImage:function(){
@@ -102,9 +105,6 @@ $(function(){
                $("td span").css("opacity",0);
            }
         },
-        brasser:function(){
-            
-        },
         
         updateLignes:function(){
           
@@ -118,7 +118,27 @@ $(function(){
               this.createGrid();
         },
         
-        
+        shuffle:function(){
+            for(let i=0;i<this.nbrTour;i++){
+                let caseVide=$(".vide");
+                let rand=Math.floor(Math.random()*this.taille +1);
+                let caseDuTableau=$(`[data-order="${rand}"] `) ;
+                //faire le switch de la case generer en random avec la case vide
+                this.swap(caseDuTableau,caseVide);
+               
+               
+            }
+            
+        },
+       //fonction qui swap deux elements 
+       swap:function(to,from) {
+         
+            var copy_to = $(to).clone(true);
+            $(from).replaceWith(copy_to);
+            $(to).replaceWith(from);
+           
+        }
+
         
         
     }//fin de l'obejet game
