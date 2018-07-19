@@ -87,7 +87,7 @@ $(function(){
             
             this.$grid.html(table);
             this.taille=ordreDesCase;
-        
+            this.resetCounter();
             
             
             
@@ -151,17 +151,18 @@ $(function(){
         handleKeyPress:function(e){
             let table=this.$grid.find("table");
             let caseVide=table.find(".vide");
+            let deplacementPermit=false;
             if(e.which==39){
                //fleche droite est cliqué
                 if(caseVide.prev().is("td")){ //verifier que l'element qui vient avant est un element td
-                    
+                    deplacementPermit=true;
                     this.swap(caseVide,caseVide.prev());
                 }
                 
             }else if(e.which==37){
                 //fleche gauche est cliqué
                 if(caseVide.next().is("td")){//verifier que l'element qui vient apres est un element td
-                   
+                    deplacementPermit=true;
                     this.swap(caseVide,caseVide.next());
                 }
                 
@@ -170,6 +171,7 @@ $(function(){
                  let parent=caseVide.parent();
                  let positionCaseVide=caseVide.index();
                  if(parent.next().is("tr")){
+                     deplacementPermit=true;
                      this.swap(caseVide,parent.next().children().eq(positionCaseVide));
                  }
                 
@@ -177,16 +179,38 @@ $(function(){
                 //fleche bas est cliqué
                 let parent=caseVide.parent();
                 let positionCaseVide=caseVide.index();
-                if(parent.prev().is("tr")){ 
+                if(parent.prev().is("tr")){
+                    deplacementPermit=true;
                     this.swap(caseVide,parent.prev().children().eq(positionCaseVide));
                 }
+            }else{
+                return;
             }
         
-            this.updateCounter();
+            //permet de verifier si un deplacement a été fait
+            if(deplacementPermit){
+               this.updateCounter();
+               this.isWin(); 
+            } 
+            
         },
         //fonction qui met a jours le nombre de deplacements
         updateCounter:function(){
             this.$deplacements.html(parseInt(this.$deplacements.text())+1)           
+        },
+        resetCounter:function(){
+            this.$deplacements.html("0");        
+        },
+        
+        //fonction qui verifie si la partie est gagné
+        isWin:function(){
+            let tdTable=[...this.$grid.find("table").find("td")];
+            for(let i=0;i<tdTable.length-1;i++){
+                if( parseInt($(tdTable[i]).attr("data-order"))!=i+1){
+                    return;
+                }
+            }
+            alert("vous avez gagné!")
         }
 
         
