@@ -26,6 +26,7 @@ $(function(){
             this.$affichageOrdre=$("#affichageOrdre");
             this.$brasser=$(".brasser");
             this.$deplacements=$(".deplacement span");
+            this.$window=$(window);
         
         
         },
@@ -37,9 +38,13 @@ $(function(){
             this.$nbrLignes.change(this.updateLignes.bind(this));
             this.$nbrColonnes.change(this.updateColonnes.bind(this));
             this.$affichageOrdre.click(this.showOrder.bind(this));
+            this.$window.keydown(this.handleKeyPress.bind(this));
         },
         
         createGrid:function(){
+            
+            
+        
           ordreDesCase=0;
           let table=$("<table></table>");
           for(let i=0;i<this.lignes;i++){
@@ -54,7 +59,7 @@ $(function(){
                     td.attr("data-order",++ordreDesCase);
                     td.addClass(`td${i}${j}`);
                      td.css({
-                    "width":this.tdWidth,
+                    "width": this.tdWidth,
                     "height":this.tdHeight,
                     "background-image":`url(${this.url})`,
                     "background-position": `${-j*this.tdWidth}px ${-i*this.tdHeight}px`,
@@ -82,8 +87,13 @@ $(function(){
             
             this.$grid.html(table);
             this.taille=ordreDesCase;
-           
+        
+            
+            
+            
         },
+        
+        
         
         changeImage:function(){
             if(this.$imageUrl.val()!=""){
@@ -124,9 +134,7 @@ $(function(){
                 let rand=Math.floor(Math.random()*this.taille +1);
                 let caseDuTableau=$(`[data-order="${rand}"] `) ;
                 //faire le switch de la case generer en random avec la case vide
-                this.swap(caseDuTableau,caseVide);
-               
-               
+                this.swap(caseDuTableau,caseVide);     
             }
             
         },
@@ -137,6 +145,42 @@ $(function(){
             $(from).replaceWith(copy_to);
             $(to).replaceWith(from);
            
+        },
+        
+        
+        handleKeyPress:function(e){
+            let table=this.$grid.find("table");
+            let caseVide=table.find(".vide");
+            if(e.which==39){
+               //fleche droite est cliqué
+                if(caseVide.prev().is("td")){ //verifier que l'element qui vient avant est un element td
+                    
+                    this.swap(caseVide,caseVide.prev());
+                }
+                
+            }else if(e.which==37){
+                //fleche gauche est cliqué
+                if(caseVide.next().is("td")){//verifier que l'element qui vient apres est un element td
+                   
+                    this.swap(caseVide,caseVide.next());
+                }
+                
+            }else if(e.which==38){
+                //fleche haut est cliqué
+                 let parent=caseVide.parent();
+                 let positionCaseVide=caseVide.index();
+                 if(parent.next().is("tr")){
+                     this.swap(caseVide,parent.next().children().eq(positionCaseVide));
+                 }
+                
+            }else if(e.which==40){
+                //fleche bas est cliqué
+                let parent=caseVide.parent();
+                let positionCaseVide=caseVide.index();
+                if(parent.prev().is("tr")){ 
+                    this.swap(caseVide,parent.prev().children().eq(positionCaseVide));
+                }
+            }
         }
 
         
