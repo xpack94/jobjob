@@ -14,6 +14,7 @@ $(function(){
             this.cachDom();
             this.addEvents();
             this.createGrid();
+            this.addTdEvents();
         },
         
         cachDom:function(){
@@ -40,6 +41,12 @@ $(function(){
             this.$affichageOrdre.click(this.showOrder.bind(this));
             this.$window.keydown(this.handleKeyPress.bind(this));
         },
+        //fonction qui ajoute les evenements de drag au cases de la table
+        addTdEvents:function(){
+           [...this.$grid.find("table").find("td")].forEach((td)=>{
+                $(td).on ("dragenter",this.checkDrag.bind(this));
+           });
+        },
         
         createGrid:function(){
             
@@ -55,7 +62,6 @@ $(function(){
                 //verifier que ce n'est pas la derniere case ou se trouve l'image vide
                 if(i*j!=(this.lignes-1)*(this.colonnes-1)){
                     td.attr("draggable",'true');
-                    td.attr("ondragstart",'drag(event)');
                     td.attr("data-order",++ordreDesCase);
                     td.addClass(`td${i}${j}`);
                      td.css({
@@ -210,8 +216,43 @@ $(function(){
                     return;
                 }
             }
-            alert("vous avez gagné!")
-        }
+            alert(`vous avez gagné!en éffectuant ${this.$deplacements.html()} deplacements`);
+        },
+        
+        checkDrag:function(e){
+            let elementCible=$(e.originalEvent.target);
+            let elementOrigine=$(e.originalEvent.relatedTarget);
+            if(elementCible.is("td.vide") && elementOrigine.not("td.vide") ){
+                // console.log(e.originalEvent.relatedTarget,e.originalEvent.target);   
+                if(this.isNeighbor(elementOrigine,elementCible)){
+                    this.swap(elementCible,elementOrigine);
+                    this.isWin();
+                    return;
+                }
+            }
+            
+           
+        },
+        //verifie si element1 est un voisin de l'element2
+        isNeighbor:function(element1,element2){
+            let parent=element2.parent();
+            let positionElement2=element2.index();
+            if(element2.prev().is(element1)){
+                //element1 vient avant l'element2
+                return true;
+            }else if(element2.next().is(element1)){
+                //element1 vient apres l'element2
+                return true;
+            }else if(parent.prev().children().eq(positionElement2).is(element1)){
+                return true;
+            }else if(parent.next().children().eq(positionElement2).is(element1)){
+                return true;    
+            }
+            return false;
+            
+            }
+            
+        
 
         
         
