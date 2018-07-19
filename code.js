@@ -25,7 +25,7 @@ $(function(){
             this.$afficher=$(".afficher");
             this.$affichageOrdre=$("#affichageOrdre");
             this.$brasser=$(".brasser");
-            this.$deplacements=$(".deplacement span");
+            this.$deplacements=$(".deplacements span");
             this.$window=$(window);
         
         
@@ -147,7 +147,7 @@ $(function(){
            
         },
         
-        
+        //fonction qui gere les bouttons du clavier
         handleKeyPress:function(e){
             let table=this.$grid.find("table");
             let caseVide=table.find(".vide");
@@ -181,6 +181,12 @@ $(function(){
                     this.swap(caseVide,parent.prev().children().eq(positionCaseVide));
                 }
             }
+        
+            this.updateCounter();
+        },
+        //fonction qui met a jours le nombre de deplacements
+        updateCounter:function(){
+            this.$deplacements.html(parseInt(this.$deplacements.text())+1)           
         }
 
         
