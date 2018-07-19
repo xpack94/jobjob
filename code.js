@@ -10,6 +10,7 @@ $(function(){
         couleurImageVide:"grey",
         taille:0,
         nbrTour:300,
+        cibleDeGlissement:null,
         init:function(){
             this.cachDom();
             this.addEvents();
@@ -219,13 +220,16 @@ $(function(){
             alert(`vous avez gagné!en éffectuant ${this.$deplacements.html()} deplacements`);
         },
         
+            
         checkDrag:function(e){
+            
             let elementCible=$(e.originalEvent.target);
-            let elementOrigine=$(e.originalEvent.relatedTarget);
+            let elementOrigine=$(e.originalEvent.relatedTarget); 
             if(elementCible.is("td.vide") && elementOrigine.not("td.vide") ){
                 // console.log(e.originalEvent.relatedTarget,e.originalEvent.target);   
                 if(this.isNeighbor(elementOrigine,elementCible)){
                     this.swap(elementCible,elementOrigine);
+                    this.updateCounter();
                     this.isWin();
                     return;
                 }
