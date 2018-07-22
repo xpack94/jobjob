@@ -49,7 +49,7 @@ $(function(){
         addTdEvents:function(){
            [...this.$grid.find("table").find("td")].forEach((td)=>{
                 $(td).on ("dragstart",this.checkDragStart.bind(this))
-                      
+                      .on("dragend")
                       .on("dragenter",this.checkDrag.bind(this));
            });
           
@@ -184,21 +184,21 @@ $(function(){
             let table=this.$grid.find("table");
             let caseVide=table.find(".vide");
             let deplacementPermit=false;
-            if(e.which==39){
+            if(e.which==37){
                //fleche droite est cliqué
                 if(caseVide.prev().is("td")){ //verifier que l'element qui vient avant est un element td
                     deplacementPermit=true;
                     this.swap(caseVide,caseVide.prev());
                 }
                 
-            }else if(e.which==37){
+            }else if(e.which==39){
                 //fleche gauche est cliqué
                 if(caseVide.next().is("td")){//verifier que l'element qui vient apres est un element td
                     deplacementPermit=true;
                     this.swap(caseVide,caseVide.next());
                 }
                 
-            }else if(e.which==38){
+            }else if(e.which==40){
                 //fleche haut est cliqué
                  let parent=caseVide.parent();
                  let positionCaseVide=caseVide.index();
@@ -207,7 +207,7 @@ $(function(){
                      this.swap(caseVide,parent.next().children().eq(positionCaseVide));
                  }
                 
-            }else if(e.which==40){
+            }else if(e.which==38){
                 //fleche bas est cliqué
                 let parent=caseVide.parent();
                 let positionCaseVide=caseVide.index();
