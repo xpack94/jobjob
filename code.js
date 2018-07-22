@@ -5,6 +5,8 @@ $(function(){
         lignes:4,
         colonnes:4,
         url:'img.png',
+        imgHeight:0,
+        imgWidth:0,
         tdWidth:125,
         tdHeight:125,
         couleurImageVide:"grey",
@@ -14,7 +16,8 @@ $(function(){
         init:function(){
             this.cachDom();
             this.addEvents();
-            this.createGrid();
+            this.loadDimensions();
+            
             this.addTdEvents();
         },
         
@@ -45,9 +48,31 @@ $(function(){
         //fonction qui ajoute les evenements de drag au cases de la table
         addTdEvents:function(){
            [...this.$grid.find("table").find("td")].forEach((td)=>{
-                $(td).on ("dragenter",this.checkDrag.bind(this));
+                $(td).on ("dragstart",this.checkDragStart.bind(this))
+                      
+                      .on("dragenter",this.checkDrag.bind(this));
            });
+          
         },
+        
+        loadDimensions:function(){
+            
+            let image = new Image();
+
+            image.src =this.url;
+
+            image.onload = ()=> {
+                this.imgHeight = image.height;
+                this.imgWidth = image.width;
+                this.tdWidth=this.imgWidth/this.colonnes;
+                this.tdHeight=this.imgHeight/this.lignes;
+                this.createGrid();
+                
+            };
+
+            image.onload();
+        },
+        
         
         createGrid:function(){
             
@@ -105,7 +130,7 @@ $(function(){
         changeImage:function(){
             if(this.$imageUrl.val()!=""){
                this.url=this.$imageUrl.val();
-               this.createGrid();
+               this.loadDimensions();
             }else{
                 alert("taper un url");
             }
@@ -127,12 +152,12 @@ $(function(){
           
               let nbLignes=parseInt(this.$nbrLignes.val());
               this.lignes=nbLignes;
-              this.createGrid();
+              this.loadDimensions();
         },
         updateColonnes:function(){
               let nbLignes=parseInt(this.$nbrColonnes.val());
               this.colonnes=nbLignes;
-              this.createGrid();
+              this.loadDimensions();
         },
         
         shuffle:function(){
@@ -220,10 +245,22 @@ $(function(){
             alert(`vous avez gagné!en éffectuant ${this.$deplacements.html()} deplacements`);
         },
         
-            
+        checkDragStart:function(e){
+            this.cibleDeGlissement=e.originalEvent.target;
+        },
         checkDrag:function(e){
+             let elementCible=$(e.originalEvent.target);
+            let elementOrigine=$(e.originalEvent.relatedTarget); 
             
-            let elementCible=$(e.originalEvent.target);
+            if(this.isNeighbor($(this.cibleDeGlissement),$(".vide"))){
+                    this.swap($(this.cibleDeGlissement),$(".vide"));
+                    this.updateCounter();
+                    this.isWin();
+                    this.cibleDeGlissement=null;
+                    return;
+            }
+            
+           /* let elementCible=$(e.originalEvent.target);
             let elementOrigine=$(e.originalEvent.relatedTarget); 
             if(elementCible.is("td.vide") && elementOrigine.not("td.vide") ){
                 // console.log(e.originalEvent.relatedTarget,e.originalEvent.target);   
@@ -233,7 +270,7 @@ $(function(){
                     this.isWin();
                     return;
                 }
-            }
+            }*/
             
            
         },
