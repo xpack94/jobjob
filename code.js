@@ -133,7 +133,7 @@ $(function(){
         },
         
         afficher:function(){
-           
+           this.loadDimensions();
         },
             
         showOrder:function(){
@@ -148,12 +148,12 @@ $(function(){
           
               let nbLignes=parseInt(this.$nbrLignes.val());
               this.lignes=nbLignes;
-              this.loadDimensions();
+              
         },
         updateColonnes:function(){
               let nbLignes=parseInt(this.$nbrColonnes.val());
               this.colonnes=nbLignes;
-              this.loadDimensions();
+             
         },
         
         shuffle:function(){
@@ -239,6 +239,7 @@ $(function(){
                 }
             }
             alert(`vous avez gagné!en éffectuant ${this.$deplacements.html()} deplacements`);
+            this.$deplacements.html(0);
         },
         
      

@@ -1,0 +1,48 @@
+ *,*::after,*::before{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toolbar{
+            display: block;
+            left: 0;
+            right: 0;
+            top: 0;
+            background-color:#d3d3d3;
+            padding: 15px;
+            height: 130px;
+        }
+        fieldset{
+            border-right: 0px;
+        }
+        .deplacements {
+            font-size: 1.32rem;
+            float: right;
+            margin-right: 5px;
+        }
+        .grid{
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        table{
+            border-collapse: collapse;
+        }
+       
+        td{
+            border: 1px solid black;
+            position: relative;
+        }
+        td span{
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.3rem;
+            opacity: 0;
+        }
+        .vide span{
+            display: none;
+        }
