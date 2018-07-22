@@ -45,13 +45,10 @@ $(function(){
             this.$affichageOrdre.click(this.showOrder.bind(this));
             this.$window.keydown(this.handleKeyPress.bind(this));
         },
-        //fonction qui ajoute les evenements de drag au cases de la table
+        //fonction qui ajoute les evenements de click sur la grille de jeu
         addTdEvents:function(){
-           [...this.$grid.find("table").find("td")].forEach((td)=>{
-                $(td).on ("dragstart",this.checkDragStart.bind(this))
-                      .on("dragend")
-                      .on("dragenter",this.checkDrag.bind(this));
-           });
+        
+            $(".grid").click(this.checkPossibleMove.bind(this));
           
         },
         
@@ -87,7 +84,6 @@ $(function(){
                 let span=$("<span></span>");
                 //verifier que ce n'est pas la derniere case ou se trouve l'image vide
                 if(i*j!=(this.lignes-1)*(this.colonnes-1)){
-                    td.attr("draggable",'true');
                     td.attr("data-order",++ordreDesCase);
                     td.addClass(`td${i}${j}`);
                      td.css({
@@ -245,32 +241,21 @@ $(function(){
             alert(`vous avez gagné!en éffectuant ${this.$deplacements.html()} deplacements`);
         },
         
-        checkDragStart:function(e){
-            this.cibleDeGlissement=e.originalEvent.target;
-        },
-        checkDrag:function(e){
-             let elementCible=$(e.originalEvent.target);
-            let elementOrigine=$(e.originalEvent.relatedTarget); 
+     
+        checkPossibleMove:function(e){
+           
+           
             
-            if(this.isNeighbor($(this.cibleDeGlissement),$(".vide"))){
-                    this.swap($(this.cibleDeGlissement),$(".vide"));
-                    this.updateCounter();
-                    this.isWin();
-                    this.cibleDeGlissement=null;
-                    return;
+           let elementCible=$(e.originalEvent.target);
+           let elementVide=$(".vide");
+
+            if(this.isNeighbor(elementVide,elementCible)){
+                this.swap(elementCible,elementVide);
+                this.updateCounter();
+                this.isWin();
+                return;
             }
             
-           /* let elementCible=$(e.originalEvent.target);
-            let elementOrigine=$(e.originalEvent.relatedTarget); 
-            if(elementCible.is("td.vide") && elementOrigine.not("td.vide") ){
-                // console.log(e.originalEvent.relatedTarget,e.originalEvent.target);   
-                if(this.isNeighbor(elementOrigine,elementCible)){
-                    this.swap(elementCible,elementOrigine);
-                    this.updateCounter();
-                    this.isWin();
-                    return;
-                }
-            }*/
             
            
         },
